@@ -1,1 +1,3 @@
 .vscode
+/api/tmp
+/api/.env
