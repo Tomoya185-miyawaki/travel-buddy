@@ -2,3 +2,4 @@
 /api/tmp
 /api/.env
 /api/log/*.log
+/docker/.env

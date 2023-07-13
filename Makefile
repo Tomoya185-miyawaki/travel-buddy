@@ -1,21 +1,32 @@
-DC := @docker-compose
+DC := docker-compose
+cddk := cd docker
 
 .PHONY: up
 up:
-	$(DC) up
+	$(cddk) && $(DC) up
 
 .PHONY: upd
 upd:
-	$(DC) up -d
+	$(cddk) && $(DC) up -d
 
 .PHONY: build
 build:
-	$(DC) build
+	$(cddk) && $(DC) build
 
 .PHONY: down
 down:
-	$(DC) down
+	$(cddk) && $(DC) down
 
 .PHONY: api
 api:
-	$(DC) exec api sh
+	$(cddk) && $(DC) exec api sh
+
+.PHONY: migrate
+migrate:
+	$(cddk) && $(DC) exec api sh -c 'go run db/migrate/migrate.go'
+
+.PHONY: db
+db:
+	$(cddk) && $(DC) exec db bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+
+

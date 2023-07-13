@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    container_name: travel-buddy-api
+    build:
+      context: ./
+      dockerfile: ./api/Dockerfile
+    volumes:
+      - ../api:/var/www
+    ports:
+      - "3000:3000"
+      - "9000:9000"
+    tty: true
+    depends_on:
+      db:
+        condition: service_started
+
+  db:
+    container_name: travel-buddy-db
+    build:
+      context: ./
+      dockerfile: ./db/Dockerfile
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    tty: true
+
+volumes:
+  mysql-volume:
